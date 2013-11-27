@@ -129,7 +129,7 @@ int main()
         mvprintw(2,40,"%d maxcombos!",maxcombo);
         mvprintw(5,2,"%d dollars",money);
         mvprintw(8,2,"money (m)ultiplyer ($%d) : %d",m_money,mult);
-        mvprintw(10,2,"combo (p)rotecter ($%d) : %.2f%%",p_money,prot*100);
+        mvprintw(10,2,"combo (p)rotecter ($%d) : %f%%",p_money,prot*100);
         mvprintw(12,2,"(c)ombo multiplyer ($%d) : %d",cm_money,combo_m);
         mvprintw(4,40,"press space when . and O meet!");
         //mvprintw()
@@ -138,9 +138,14 @@ int main()
 /*
   ####
  #    #
-#      #
+#circle#
 #      #
  #    #
   ####
+
+author joe1256joe
+
+idea from drmeth
+www.drmeth.com
 */
 }
