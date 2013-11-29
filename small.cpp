@@ -7,6 +7,7 @@
 #define DEBUG
 
 using namespace std;
+time_t timer[50]={0};
 int maxX,maxY;
 char circle[16];
 void init()
@@ -20,6 +21,11 @@ void init()
     start_color();
     init_pair(1,COLOR_RED,COLOR_BLACK);
 }
+int settimer(int k)
+{
+    timer[k]=clock();
+}
+
 void printcir()
 {
     mvaddch(1,2+20,circle[0]);
@@ -46,7 +52,7 @@ int main()
     int cpos=0,dotpos=1,combo=0,maxcombo=0,money=0,mult=1,combo_m=1;
     int m_money=50,p_money=200,cm_money=100;
     float prot=0.0;
-    bool upgrade[20];
+    bool upgrade[20],clicked=0;
     char c;
     for(int i=0;i<16;i++)
         circle[i]='*';
@@ -55,6 +61,7 @@ int main()
         printcir();
         if(((clock()-timenow)/mid)>0)
         {
+            clicked=0;
             timenow=clock();
             circle[dotpos]='*';
             circle[cpos]='*';
@@ -77,6 +84,9 @@ int main()
             switch(c)
             {
             case ' ':
+                if(clicked)
+                    break;
+                clicked=1;
                 if (cpos == dotpos)
                 {
                     echo();
