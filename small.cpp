@@ -1,15 +1,58 @@
 #include<iostream>
 #include<ctime>
 #include<cstdlib>
-#include<curses.h>
+#include"curses.h"
 #include<algorithm>
-#define mid 75
-#define DEBUG
+#define NDEBUG
 
 using namespace std;
 time_t timer[50]={0};
 int maxX,maxY;
 char circle[16];
+
+struct d{
+    int money;
+    char dif;
+} data;
+
+void rdata()
+{
+    FILE *f;
+    f = fopen("save.cir","r");
+    if(f==NULL)
+        printf("ERROR!!!");
+    else
+    {
+        fread((void*)&data,sizeof(d),1,f);;
+        fclose(f);
+    }
+}
+
+void wdata()
+{
+    FILE *f;
+    f = fopen("save.cir","w");
+    fwrite((void*)&data,sizeof(d),1,f);
+    fclose(f);
+}
+
+void initData()
+{
+    FILE *f;
+    f = fopen("save.cir","r");
+    if(f == NULL)
+    {
+        data.money = 0;
+        data.dif = 75;
+        wdata();
+    }
+    else
+    {
+        fclose(f);
+        rdata();
+    }
+}
+
 void init()
 {
     //noecho();
@@ -20,6 +63,8 @@ void init()
     getmaxyx(stdscr,maxY,maxX);
     start_color();
     init_pair(1,COLOR_RED,COLOR_BLACK);
+
+    initData();
 }
 int settimer(int k)
 {
@@ -45,11 +90,12 @@ void printcir()
     mvaddch(6,4+20,circle[10]);
     mvaddch(6,2+20,circle[11]);
 }
+
 int main()
 {
     init();
     time_t timenow=clock();
-    int cpos=0,dotpos=1,combo=0,maxcombo=0,money=0,mult=1,combo_m=1;
+    int cpos=0,dotpos=1,combo=0,maxcombo=0,money=data.money,mult=1,combo_m=1,mid=data.dif;
     int m_money=50,p_money=200,cm_money=100;
     float prot=0.0;
     bool upgrade[20],clicked=0;
@@ -126,6 +172,10 @@ int main()
                     combo_m++;
                 }
                 break;
+            case 's':
+                data.money = money;
+                wdata();
+                break;
             #ifdef DEBUG
             case 'j':
                 money+=5000;
@@ -141,6 +191,7 @@ int main()
         mvprintw(8,2,"money (m)ultiplyer ($%d) : %d",m_money,mult);
         mvprintw(10,2,"combo (p)rotecter ($%d) : %f%%",p_money,prot*100);
         mvprintw(12,2,"(c)ombo multiplyer ($%d) : %d",cm_money,combo_m);
+        mvprintw(14,2,"(s)ave");
         mvprintw(4,40,"press space when . and O meet!");
         //mvprintw()
         refresh();
